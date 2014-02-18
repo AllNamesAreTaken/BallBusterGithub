@@ -11,20 +11,31 @@ import lejos.nxt.UltrasonicSensor;
 public class BallBusterMain {
 
 	private static NXTRegulatedMotor buster = Motor.A;
+	private static NXTRegulatedMotor launcher = Motor.B;
 	private static UltrasonicSensor u1 = new UltrasonicSensor(SensorPort.S1);
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
 		while(!Button.ESCAPE.isDown())
 		{
-			if(u1.getDistance() < 15 && u1.getDistance() > 10)
+			if(u1.getDistance() < 20)
 			{
 				hitBall();
+			}
+			if(Button.LEFT.isDown())
+			{
+				launchBall();
 			}
 		}
 		
 	}
+	private static void launchBall() {
+		launcher.setSpeed(25);
+		launcher.forward();
+		
+	}
 	private static void hitBall() {
+		launcher.stop();
 		int mode = u1.getMode();
 		u1.setMode(u1.off());
 		while(buster.getPosition() < 90)
