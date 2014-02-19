@@ -1,20 +1,36 @@
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Vector;
+
+import javax.bluetooth.RemoteDevice;
+
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
 import lejos.nxt.NXT;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.UltrasonicSensor;
-
-
-
+import lejos.nxt.comm.Bluetooth;
+import lejos.nxt.comm.NXTConnection;
+import lejos.nxt.comm.RConsole;
+import lejos.util.LogColumn;
+import lejos.util.NXTDataLogger;
 
 public class BallBusterMain {
 
 	private static NXTRegulatedMotor buster = Motor.A;
 	private static NXTRegulatedMotor launcher = Motor.B;
 	private static UltrasonicSensor u1 = new UltrasonicSensor(SensorPort.S1);
+	private static NXTDataLogger logger;
+	private static NXTConnection logConn;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		System.out.println("BALL BUSTER!");
+//		logger = new NXTDataLogger();
+//		LogColumn[] columnDefs = new LogColumn[2];
+//		columnDefs[1] = new LogColumn("No clue", LogColumn.DT_INTEGER);
+//		logger.startRealtimeLog(logConn);
+//		logger.setColumns(columnDefs);
 		
 		while(!Button.ESCAPE.isDown())
 		{
@@ -30,12 +46,12 @@ public class BallBusterMain {
 		
 	}
 	private static void launchBall() {
+		//logger.writeComment("Button Pressed");
 		launcher.setSpeed(25);
 		launcher.forward();
 		
 	}
 	private static void hitBall() {
-		launcher.stop();
 		int mode = u1.getMode();
 		u1.setMode(u1.off());
 		while(buster.getPosition() < 90)
@@ -53,6 +69,7 @@ public class BallBusterMain {
 		}
 		buster.stop();
 		u1.setMode(mode);
+		launcher.stop();
 		
 	}
 
