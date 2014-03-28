@@ -7,7 +7,6 @@ public class Turner extends Thread{
 	public void run()
 	{
 		Motor.B.setSpeed(50);
-		while(!Button.ESCAPE.isDown())
 		{
 			turnBot(45);
 			turnBot(-45);
