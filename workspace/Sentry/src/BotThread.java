@@ -7,7 +7,7 @@ import lejos.robotics.navigation.Navigator;
 
 
 public class BotThread extends Thread {
-
+	//Test Commit
 	public void run()
 	{
 		Motor.A.setSpeed(800);
