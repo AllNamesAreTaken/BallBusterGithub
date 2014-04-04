@@ -26,11 +26,18 @@ public class BallBusterMain {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		System.out.println("BALL BUSTER!");
-//		logger = new NXTDataLogger();
-//		LogColumn[] columnDefs = new LogColumn[2];
-//		columnDefs[1] = new LogColumn("No clue", LogColumn.DT_INTEGER);
-//		logger.startRealtimeLog(logConn);
-//		logger.setColumns(columnDefs);
+		logger = new NXTDataLogger();
+		LogColumn[] columnDefs = new LogColumn[2];
+		columnDefs[1] = new LogColumn("No clue", LogColumn.DT_INTEGER);
+		logger.setColumns(columnDefs);
+		try
+		{
+		    logger.startRealtimeLog(logConn);
+		}
+		catch(Exception ex)
+		{
+		    System.out.println("Logger failed.");
+		}
 		
 		while(!Button.ESCAPE.isDown())
 		{
@@ -46,7 +53,7 @@ public class BallBusterMain {
 		
 	}
 	private static void launchBall() {
-		//logger.writeComment("Button Pressed");
+		logger.writeComment("Button Pressed");
 		launcher.setSpeed(25);
 		launcher.forward();
 		
