@@ -6,14 +6,16 @@ import lejos.util.*;
 public class Log
 {
     static NXTDataLogger logger = new NXTDataLogger();
-    static LogColumn[] columnDefs = { new LogColumn("Dinosaurs",
-            LogColumn.DT_BOOLEAN) };
+    static LogColumn[] columnDefs = { new LogColumn("DinosaursX",
+            LogColumn.DT_DOUBLE), new LogColumn("Dinosaursy",
+                    LogColumn.DT_DOUBLE) };
 
     public static void main(String[] args)
     {
         // Set up the logging connection
         boolean connectionSuccess = false;
-        boolean dinosaur = true;
+        double dinosaurX = 0;
+        double dinosaurY = 0;
         
         while(!connectionSuccess && !Button.ESCAPE.isDown())
         {
@@ -32,17 +34,14 @@ public class Log
         System.out.println("Press escape to quit");
         
         while(!Button.ESCAPE.isDown())
-        {
-            if(dinosaur)
-            {
-                dinosaur = false;
-            }
-            else
-            {
-                dinosaur = true;
-            }
-            
-            logger.writeLog(dinosaur);
+        {   
+            logger.writeLog(Math.cos(dinosaurX/100));
+            logger.writeLog(Math.sin(dinosaurY/100));
+            logger.finishLine();
+            dinosaurX =dinosaurX + 1;
+            dinosaurY =dinosaurY + 2;
         }
+        
+        logger.stopLogging();
     }
 }
