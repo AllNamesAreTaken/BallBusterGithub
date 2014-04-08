@@ -10,16 +10,19 @@ import org.opencv.imgproc.Imgproc;
 
 public class ImageDetection {
 	public static VideoCapture capture;
-	public static Mat oriImg = new Mat();
-	public static Mat hsvImg = new Mat();
-	public static Mat redGsImg = new Mat();
-	public static Mat erode = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,3));
-	public static Mat dilate = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5,5));
+	public static Mat oriImg;
+	public static Mat hsvImg;
+	public static Mat redGsImg;
+	public static Mat erode;
+	public static Mat dilate;
 	
 	public static void startCamera() {
-		VideoCapture capture = new VideoCapture(0);
+		VideoCapture capture = new VideoCapture(1);
 		capture.set(3, 600);
 		capture.set(4, 600);
+		erode = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,3));
+		dilate = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5,5));
+		updateImage();
 	}
 	
 	public static double[] getRedBall() {
