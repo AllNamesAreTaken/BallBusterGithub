@@ -9,7 +9,7 @@ import org.opencv.imgproc.Imgproc;
 
 
 public class ImageDetection {
-	public static VideoCapture capture;
+	public static VideoCapture capture = new VideoCapture(1);
 	public static Mat oriImg;
 	public static Mat hsvImg;
 	public static Mat redGsImg;
@@ -17,7 +17,6 @@ public class ImageDetection {
 	public static Mat dilate;
 	
 	public static void startCamera() {
-		VideoCapture capture = new VideoCapture(1);
 		capture.set(3, 600);
 		capture.set(4, 600);
 		erode = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,3));
