@@ -15,6 +15,8 @@ public class ImageDetection {
 	private Mat redGsImg;
 	private Mat erode;
 	private Mat dilate;
+	private Panel redGsPanel;
+	private Frame redGsFrame;
 	
 	public ImageDetection() {
 		erode = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,3));
@@ -28,6 +30,10 @@ public class ImageDetection {
 		capture = new VideoCapture(1);
 		capture.set(3, 600);
 		capture.set(4, 600);
+
+		capture.read(oriImg);
+		redGsPanel = new Panel();
+		redGsFrame = new Frame(redGsPanel, "Grayscale", oriImg.width(), oriImg.height());
 		updateImage();
 	}
 	
@@ -86,6 +92,8 @@ public class ImageDetection {
 	private void updateImage() {
 		capture.read(oriImg);
 
+	    redGsPanel.setimagewithMat(oriImg);//redGsImg);
+	    redGsFrame.repaint();
 		Imgproc.GaussianBlur(oriImg, oriImg, new Size(11,11), 30.0);
 		Imgproc.cvtColor(oriImg, hsvImg, Imgproc.COLOR_BGR2HSV);
 	}
