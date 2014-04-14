@@ -9,22 +9,33 @@ import org.opencv.imgproc.Imgproc;
 
 
 public class ImageDetection {
-	public static VideoCapture capture = new VideoCapture(1);
-	public static Mat oriImg;
-	public static Mat hsvImg;
-	public static Mat redGsImg;
-	public static Mat erode;
-	public static Mat dilate;
+	private VideoCapture capture;
+	private Mat oriImg;
+	private Mat hsvImg;
+	private Mat redGsImg;
+	private Mat erode;
+	private Mat dilate;
 	
-	public static void startCamera() {
-		capture.set(3, 600);
-		capture.set(4, 600);
+	public ImageDetection() {
 		erode = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,3));
 		dilate = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5,5));
+		oriImg = new Mat();
+		hsvImg = new Mat();
+		redGsImg = new Mat();
+	}
+	
+	public void startCamera() {
+		capture = new VideoCapture(1);
+		capture.set(3, 600);
+		capture.set(4, 600);
 		updateImage();
 	}
 	
-	public static double[] getRedBall() {
+	public void stopCamera() {
+		capture.release();
+	}
+	
+	public double[] getRedBall() {
 		double[] bi = new double[2];
 		updateImage();
 
@@ -48,7 +59,7 @@ public class ImageDetection {
 		return bi;
 	}
 	
-	public static double[] getGreenSquare() {
+	public double[] getGreenSquare() {
 		double[] bi = new double[2];
 		updateImage();
 
@@ -72,7 +83,7 @@ public class ImageDetection {
 		return bi;
 	}
 	
-	public static void updateImage() {
+	private void updateImage() {
 		capture.read(oriImg);
 
 		Imgproc.GaussianBlur(oriImg, oriImg, new Size(11,11), 30.0);

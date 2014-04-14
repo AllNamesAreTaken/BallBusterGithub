@@ -20,9 +20,13 @@ public class Main {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		ImageDetection.startCamera();
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		ImageDetection imgd = new ImageDetection();
+		imgd.startCamera();
+		imgd.getRedBall();
 		robot.hit(30);
 		robot.resetRamp();
+		imgd.stopCamera();
 //		Motor.A.setSpeed(800);
 //		Motor.B.setSpeed(50);
 //		Motor.B.resetTachoCount();
