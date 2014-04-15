@@ -52,9 +52,9 @@ public class Main {
 		while(!Button.ESCAPE.isDown())
 		{
 			startTime = System.currentTimeMillis();
-			double[] test = imgd.getRedBall();
-			System.out.println(test[0] + " " + test[1]);
-			if(test[0] > 0)
+			double[] redBallPostion = imgd.getRedBall();
+			System.out.println(redBallPostion[0] + " " + redBallPostion[1]);
+			if(redBallPostion[0] > 0)
 			{
 				robot.hit(20);
 			}
