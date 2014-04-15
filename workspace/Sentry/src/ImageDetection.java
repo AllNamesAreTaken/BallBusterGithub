@@ -8,15 +8,15 @@ import org.opencv.highgui.VideoCapture;
 import org.opencv.imgproc.Imgproc;
 
 
-public class ImageDetection {
+public class ImageDetection implements Runnable {
 	private VideoCapture capture;
 	private Mat oriImg;
 	private Mat hsvImg;
 	private Mat redGsImg;
 	private Mat erode;
 	private Mat dilate;
-	private Panel redGsPanel;
-	private Frame redGsFrame;
+//	private Panel redGsPanel;
+//	private Frame redGsFrame;
 	
 	public ImageDetection() {
 		erode = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,3));
@@ -28,12 +28,12 @@ public class ImageDetection {
 	
 	public void startCamera() {
 		capture = new VideoCapture(1);
-		capture.set(3, 600);
-		capture.set(4, 600);
+		capture.set(3, 1000);
+		capture.set(4, 1000);
 
 		capture.read(oriImg);
-		redGsPanel = new Panel();
-		redGsFrame = new Frame(redGsPanel, "Grayscale", oriImg.width(), oriImg.height());
+//		redGsPanel = new Panel();
+//		redGsFrame = new Frame(redGsPanel, "Grayscale", oriImg.width(), oriImg.height());
 		updateImage();
 	}
 	
@@ -92,9 +92,15 @@ public class ImageDetection {
 	private void updateImage() {
 		capture.read(oriImg);
 
-	    redGsPanel.setimagewithMat(oriImg);//redGsImg);
-	    redGsFrame.repaint();
+//	    redGsPanel.setimagewithMat(oriImg);//redGsImg);
+//	    redGsFrame.repaint();
 		Imgproc.GaussianBlur(oriImg, oriImg, new Size(11,11), 30.0);
 		Imgproc.cvtColor(oriImg, hsvImg, Imgproc.COLOR_BGR2HSV);
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 }

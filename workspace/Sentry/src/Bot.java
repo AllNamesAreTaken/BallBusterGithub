@@ -22,6 +22,7 @@ public class Bot {
 		kicker.rotate(180);
 		long endTime = System.currentTimeMillis();
 		System.out.println("Time to rotate to " + degree + ": " + (endTime-startTime) + "\n");
+		resetRamp();
 		// TODO Auto-generated method stub
 		
 	}
