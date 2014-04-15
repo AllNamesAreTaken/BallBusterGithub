@@ -2,7 +2,6 @@ import java.io.*;
 
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
-import lejos.nxt.comm.Bluetooth;
 import lejos.nxt.remote.RemoteMotor;
 import lejos.util.*;
 import lejos.pc.charting.*;
@@ -62,7 +61,7 @@ public class Main {
 			endTime = System.currentTimeMillis();
 			if(logger != null)
 			{
-				logger.print(endTime - startTime + ",");
+				logger.append(endTime - startTime + ",");
 			}
 		}
 		
@@ -119,6 +118,7 @@ public class Main {
 //					bt.run();
 ////				if(turn.run();
 //			}
+			logger.close();
 			imgd.stopCamera();
 			System.exit(0);
 	}
