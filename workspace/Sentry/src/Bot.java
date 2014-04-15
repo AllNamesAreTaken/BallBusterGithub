@@ -18,7 +18,16 @@ public class Bot {
 	public void hit(int degree) 
 	{
 		long startTime = System.currentTimeMillis();
-		ramp.rotateTo(degree);
+		while(ramp.getTachoCount() != degree)
+		{
+			if(ramp.getTachoCount() < degree)
+				ramp.forward();
+			if(ramp.getTachoCount() > degree)
+				ramp.backward();
+			System.out.println(ramp.getTachoCount());
+		}
+		ramp.stop();
+//		ramp.rotateTo(degree);
 		kicker.rotate(180);
 		long endTime = System.currentTimeMillis();
 		System.out.println("Time to rotate to " + degree + ": " + (endTime-startTime) + "\n");

@@ -1,7 +1,11 @@
+import java.io.*;
+
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
+import lejos.nxt.comm.Bluetooth;
 import lejos.nxt.remote.RemoteMotor;
 import lejos.util.*;
+import lejos.pc.charting.*;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -18,18 +22,25 @@ import org.opencv.imgproc.Imgproc;
 public class Main {
 
 	static Bot robot = new Bot(Motor.A, Motor.B);
-//	static NXTDataLogger logger = new NXTDataLogger();
-//    static LogColumn[] columnDefs = { new LogColumn("DinosaursX",
-//            LogColumn.DT_DOUBLE), new LogColumn("Dinosaursy",
-//                    LogColumn.DT_DOUBLE) };
-//	
+	
+
 	public static void main(String[] args) {
+		PrintWriter logger = null;
+		
 		// TODO Auto-generated method stub
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 //		Don't uncomment if static class is
 //		Bot robot = new Bot(Motor.A, Motor.B);
 //		robot.resetRamp();
-		
+		try
+		{
+			logger = new PrintWriter(new File("LogData.txt"));
+		}
+		catch(FileNotFoundException ex)
+		{
+			System.out.println("Logging file not found");
+		}
+        
 		ImageDetection imgd = new ImageDetection();
 		imgd.startCamera();
 		
@@ -49,7 +60,10 @@ public class Main {
 				robot.hit(20);
 			}
 			endTime = System.currentTimeMillis();
-			
+			if(logger != null)
+			{
+				logger.print(endTime - startTime + ",");
+			}
 		}
 		
 //			Motor.B.forward();
