@@ -22,51 +22,54 @@ import org.opencv.imgproc.Imgproc;
 
 public class Main {
 
-//	static Bot robot = new Bot(Motor.A, Motor.B);
 	static ImageDetection imgd;
 
 	public static void main(String[] args) {
 		PrintWriter logger = null;
+		Bot robot = new Bot(Motor.A, Motor.B);
 		imgd = new ImageDetection();
 
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
 		try {
-			logger = new PrintWriter(new BufferedWriter(new FileWriter("LogData.csv", true)));
+			logger = new PrintWriter(new BufferedWriter(new FileWriter(
+					"LogData.csv", true)));
 		} catch (IOException ex) {
 			System.out.println("Logging file not found");
 		}
 
-
-//		Motor.A.setSpeed(800);
-//		Motor.B.setSpeed(50);
-//		Motor.B.resetTachoCount();
+		robot.setSpeeds(800, 50);
+		robot.resetTachoCount();
 		Boolean quit = false;
 		long startTime = 0;
 		long endTime = 1;
 		int count = 0;
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd|HH:mm:ss");
-		//get current date time with Date()
+		// get current date time with Date()
 		Date date = new Date();
-		logger.append("\n<" + /*dateFormat.format(date)*/"DWG" + ">,");
+		logger.append("\n<" + /* dateFormat.format(date) */"DWG" + ">,");
 
 		imgd.startDet();
 		imgd.start();
-		while (!Button.ESCAPE.isDown()) {
-			startTime = System.currentTimeMillis();
-			double[] redBallPostion = imgd.getRedBall();
-			System.out.println(redBallPostion[0] + " " + redBallPostion[1]);
-			if(redBallPostion[0] > 0)
-			{
-//				robot.hit(20);
+		while (robot.isStopping()) {
+			startTime = System.nanoTime();
+			double[] redBallPosition = imgd.getRedBall();
+			// System.out.println(redBallPostion[0] + " " + redBallPostion[1]);
+			if (imgd.isTimeToHit()) {
+				robot.hit();
 			}
-			endTime = System.currentTimeMillis();
-			
-//			if (logger != null) {
-//				logger.append((endTime - startTime) + ",");
-//			}
-//			count++;
-//			System.out.println(count + " ");
+			if (redBallPosition[0] > 0) {
+				robot.setDegree((int) Math.atan2((500 - redBallPosition[1]),
+						redBallPosition[0]));
+				// robot.hit(20);
+			}
+			endTime = System.nanoTime();
+
+			if (logger != null) {
+				logger.append((endTime - startTime) + ",");
+			}
+			// count++;
+			// System.out.println(count + " ");
 		}
 
 		logger.close();
