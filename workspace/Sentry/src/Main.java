@@ -54,10 +54,18 @@ public class Main {
 		imgd.start();
 		while (!Button.ESCAPE.isDown()) {
 			startTime = System.currentTimeMillis();
+<<<<<<< HEAD
 			double[] test = imgd.getRedBall();
 			System.out.println(test[0] + " " + test[1]);
 			if (test[0] > 0) {
 //				robot.hit(20);
+=======
+			double[] redBallPostion = imgd.getRedBall();
+			System.out.println(redBallPostion[0] + " " + redBallPostion[1]);
+			if(redBallPostion[0] > 0)
+			{
+				robot.hit(20);
+>>>>>>> branch 'master' of https://github.com/holderwd93/BallBusterGithub.git
 			}
 			endTime = System.currentTimeMillis();
 			
