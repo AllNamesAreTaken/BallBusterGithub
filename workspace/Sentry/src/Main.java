@@ -58,7 +58,7 @@ public class Main {
 			System.out.println(redBallPostion[0] + " " + redBallPostion[1]);
 			if(redBallPostion[0] > 0)
 			{
-				robot.hit(20);
+//				robot.hit(20);
 			}
 			endTime = System.currentTimeMillis();
 			
