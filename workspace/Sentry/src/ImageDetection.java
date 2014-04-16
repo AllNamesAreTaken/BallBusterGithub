@@ -65,7 +65,7 @@ public class ImageDetection extends Thread {
 					2, 500, 40, 40, 20, 100);
 			if (circles.cols() > 0) {
 				if(timeToHit == 0) {
-					timeToHit = System.nanoTime();
+					timeToHit = System.nanoTime() + 2000000000;//time to hit is in 2 sec
 				}
 				bi[0] = circles.get(0, 0)[0];
 				bi[1] = circles.get(0, 0)[1];
@@ -98,7 +98,7 @@ public class ImageDetection extends Thread {
 	}
 	
 	public boolean isTimeToHit() {
-		if(timeToHit < System.nanoTime()) {
+		if(timeToHit - System.nanoTime() - 500000000 < 0) {
 			timeToHit = 0;
 			return true;
 		}
