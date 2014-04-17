@@ -51,18 +51,22 @@ public class Main {
 
 		imgd.startDet();
 		imgd.start();
-		while (robot.isStopping()) {
+
+		robot.start();
+		// while(!robot.isRunning()){}
+		while (!Button.ESCAPE.isDown()) {
 			startTime = System.nanoTime();
 			double[] redBallPosition = imgd.getRedBall();
-			// System.out.println(redBallPostion[0] + " " + redBallPostion[1]);
-			if (imgd.isTimeToHit()) {
-				robot.hit();
-			}
-			if (redBallPosition[0] > 0) {
-				robot.setDegree((int) Math.atan2((500 - redBallPosition[1]),
-						redBallPosition[0]));
-				// robot.hit(20);
-			}
+//			System.out.println(redBallPosition[0] + " " + redBallPosition[1]);
+			// if (imgd.isTimeToHit()) {
+			// robot.hit();
+			// }
+//			int degrees = (int) (57.2957795 * Math.atan2(
+//					300 - redBallPosition[1], redBallPosition[0]));
+//			 System.out.println(degrees);
+			robot.setDegree((int) (57.2957795 * Math.atan2(
+					300 - redBallPosition[1], redBallPosition[0])));
+			// robot.hit(20);
 			endTime = System.nanoTime();
 
 			if (logger != null) {
@@ -71,7 +75,7 @@ public class Main {
 			// count++;
 			// System.out.println(count + " ");
 		}
-
+		robot.stopBot();
 		logger.close();
 		imgd.stopDet();
 		System.exit(0);

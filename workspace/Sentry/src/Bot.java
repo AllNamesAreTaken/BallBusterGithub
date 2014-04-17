@@ -8,7 +8,7 @@ public class Bot extends Thread{
 	RegulatedMotor kicker;
 	RegulatedMotor ramp;
 	int degree = 0;
-	private boolean isRunning;
+	private boolean isRunning = true;
 	private boolean willHit;
 
 	public Bot(RegulatedMotor x, RegulatedMotor y) {
@@ -18,24 +18,40 @@ public class Bot extends Thread{
 	}
 	
 	public void run() {
-		isRunning = true;
-		while(isRunning) {
-			aim();
-			isRunning = !Button.ESCAPE.isDown();
+//		isRunning = true;
+		while (isRunning/*ramp.getTachoCount() != degree*/) {
+			if (ramp.getTachoCount() < degree + 1)
+				ramp.forward();
+			else if (ramp.getTachoCount() > degree - 1)
+				ramp.backward();
+			else
+			{
+				ramp.stop();
+				// ramp.rotateTo(degree);
+				kicker.rotate(180);
+			}
+//			System.out.println(ramp.getTachoCount());
 		}
+		ramp.stop();
+		resetRamp();
+//			isRunning = !Button.ESCAPE.isDown();
 	}
 	
-	public boolean isStopping() {
+	public boolean isRunning() {
 		return isRunning;
 	}
 	
+	public void stopBot() {
+		isRunning = false;
+	}
+	
 	public void setSpeeds(int motA, int motB) {
-		kicker.setSpeed(A);
-		ramp.setSpeed(B);
+		kicker.setSpeed(motA);
+		ramp.setSpeed(motB);
 	}
 
 	public void setDegree(int deg) {
-		if (deg != 200 || Math.abs(deg) <= 30) {
+		if (Math.abs(deg) <= 40) {
 			degree = deg;
 			return;
 		}
@@ -49,24 +65,18 @@ public class Bot extends Thread{
 	public void aim() {
 //		long startTime = System.currentTimeMillis();
 		//tachoCount returns int
-//		while (ramp.getTachoCount() != degree) {
-			if (ramp.getTachoCount() < degree)
-				ramp.forward();
-			if (ramp.getTachoCount() > degree)
-				ramp.backward();
-//			System.out.println(ramp.getTachoCount());
+			
+//		if(willHit) {
+//			ramp.stop();
+//			// ramp.rotateTo(degree);
+//			kicker.rotate(180);
+//			willHit = false;
 //		}
-		if(willHit) {
-			ramp.stop();
-			// ramp.rotateTo(degree);
-			kicker.rotate(180);
-			willHit = false;
-		}
+			
 //		long endTime = System.currentTimeMillis();
 //		System.out.println("Time to rotate to " + degree + ": "
 //				+ (endTime - startTime) + "\n");
-		resetRamp();
-		// TODO Auto-generated method stub
+//		resetRamp();
 
 	}
 
