@@ -26,7 +26,6 @@ public class ImageDetection extends Thread {
 	private Panel oriPanel;
 	private Frame oriFrame;
 	private long timeToHit;
-	private int angle;
 
 	public ImageDetection() {
 	}

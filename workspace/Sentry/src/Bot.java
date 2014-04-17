@@ -19,16 +19,17 @@ public class Bot extends Thread{
 	
 	public void run() {
 //		isRunning = true;
-		while (isRunning/*ramp.getTachoCount() != degree*/) {
-			if (ramp.getTachoCount() < degree + 1)
+		while (isRunning){ //ramp.getTachoCount() != degree) {
+			if (ramp.getTachoCount() < degree)
 				ramp.forward();
-			else if (ramp.getTachoCount() > degree - 1)
+			else if (ramp.getTachoCount() > degree)
 				ramp.backward();
 			else
 			{
 				ramp.stop();
 				// ramp.rotateTo(degree);
 				kicker.rotate(180);
+				resetRamp();
 			}
 //			System.out.println(ramp.getTachoCount());
 		}
