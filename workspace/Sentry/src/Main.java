@@ -38,47 +38,33 @@ public class Main {
 			System.out.println("Logging file not found");
 		}
 
-		robot.setSpeeds(800, 50);
 		robot.resetTachoCount();
 		Boolean quit = false;
 		long startTime = 0;
 		long endTime = 1;
 		int count = 0;
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd|HH:mm:ss");
-		// get current date time with Date()
 		Date date = new Date();
-		logger.append("\n<" + /* dateFormat.format(date) */"DWG" + ">,");
+		logger.append("\n<" + "DWG" + ">,");
 
 		imgd.startDet();
 		imgd.start();
 
 		robot.start();
-		// while(!robot.isRunning()){}
 		while (!Button.ESCAPE.isDown()) {
 			startTime = System.nanoTime();
 			double[] redBallPosition = imgd.getRedBall();
-//			System.out.println(redBallPosition[0] + " " + redBallPosition[1]);
-			// if (imgd.isTimeToHit()) {
-			// robot.hit();
-			// }
-//			int degrees = (int) (57.2957795 * Math.atan2(
-//					300 - redBallPosition[1], redBallPosition[0]));
-//			 System.out.println(degrees);
-			robot.setDegree((int) (57.2957795 * Math.atan2(
+			robot.setDegree((int) (400* Math.atan2(
 					300 - redBallPosition[1], redBallPosition[0])));
-			// robot.hit(20);
 			endTime = System.nanoTime();
 
 			if (logger != null) {
 				logger.append((endTime - startTime) + ",");
 			}
-			// count++;
-			// System.out.println(count + " ");
 		}
 		robot.stopBot();
 		logger.close();
 		imgd.stopDet();
-		System.exit(0);
 	}
 
 }

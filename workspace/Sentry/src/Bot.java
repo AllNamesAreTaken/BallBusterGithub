@@ -8,34 +8,32 @@ public class Bot extends Thread{
 	RegulatedMotor kicker;
 	RegulatedMotor ramp;
 	int degree = 0;
-	private boolean isRunning = true;
-	private boolean willHit;
+	boolean isRunning = true;
+	boolean detected = false;
 
 	public Bot(RegulatedMotor x, RegulatedMotor y) {
 		kicker = x;
 		ramp = y;
-		setSpeeds(800, 50);
+		kicker.setSpeed(600);
+		ramp.setSpeed(400);
 	}
 	
 	public void run() {
-//		isRunning = true;
-		while (isRunning){ //ramp.getTachoCount() != degree) {
-			if (ramp.getTachoCount() < degree)
-				ramp.forward();
-			else if (ramp.getTachoCount() > degree)
-				ramp.backward();
-			else
-			{
-				ramp.stop();
-				// ramp.rotateTo(degree);
+		while (isRunning){
+			if(detected) { 
+				detected = false;
+				ramp.rotateTo(degree);
 				kicker.rotate(180);
-				resetRamp();
+				ramp.rotateTo(0);
+//				continue;
 			}
-//			System.out.println(ramp.getTachoCount());
+//			if (ramp.getTachoCount() < degree)
+//				ramp.forward();
+//			else if (ramp.getTachoCount() > degree)
+//				ramp.backward();
 		}
 		ramp.stop();
-		resetRamp();
-//			isRunning = !Button.ESCAPE.isDown();
+		ramp.rotateTo(0);
 	}
 	
 	public boolean isRunning() {
@@ -45,47 +43,20 @@ public class Bot extends Thread{
 	public void stopBot() {
 		isRunning = false;
 	}
-	
-	public void setSpeeds(int motA, int motB) {
-		kicker.setSpeed(motA);
-		ramp.setSpeed(motB);
-	}
 
 	public void setDegree(int deg) {
-		if (Math.abs(deg) <= 40) {
+		if(Math.abs(deg) < 400) {
+			detected = true;
 			degree = deg;
-			return;
 		}
-		degree = 0;
-	}
-	
-	public void hit() {
-		willHit = true;
-	}
-
-	public void aim() {
-//		long startTime = System.currentTimeMillis();
-		//tachoCount returns int
-			
-//		if(willHit) {
-//			ramp.stop();
-//			// ramp.rotateTo(degree);
-//			kicker.rotate(180);
-//			willHit = false;
-//		}
-			
-//		long endTime = System.currentTimeMillis();
-//		System.out.println("Time to rotate to " + degree + ": "
-//				+ (endTime - startTime) + "\n");
-//		resetRamp();
-
+		else {
+			detected = false;
+			degree = 0;
+		}
 	}
 
 	public void resetRamp() {
-//		long startTime = System.currentTimeMillis();
 		ramp.rotateTo(0);
-//		long endTime = System.currentTimeMillis();
-//		System.out.println("Time to reset: " + (endTime - startTime) + "\n");
 	}
 
 	public void resetTachoCount() {

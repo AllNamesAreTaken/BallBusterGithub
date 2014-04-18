@@ -14,18 +14,14 @@ public class ImageDetection extends Thread {
 	private Mat redGsImg;
 	private Mat erode;
 	private Mat dilate;
+	
 	private double[] position;
-	private double[] prevPos;
-	private long prevCaptTime;
-	private long recCaptTime;
-	private long ballSpeedX;
-	private long ballSpeedY;
 	private boolean canRun;
-	private Panel redGsPanel;
-	private Frame redGsFrame;
-	private Panel oriPanel;
-	private Frame oriFrame;
-	private long timeToHit;
+	
+//	private Panel redGsPanel;
+//	private Panel oriPanel;
+//	private Frame redGsFrame;
+//	private Frame oriFrame;
 
 	public ImageDetection() {
 	}
@@ -45,12 +41,12 @@ public class ImageDetection extends Thread {
 
 		capture.read(oriImg);
 		oriImg.copyTo(redGsImg);
-		redGsPanel = new Panel();
-		redGsFrame = new Frame(redGsPanel, "View", 1000,
-				1000);
-		oriPanel = new Panel();
-		oriFrame = new Frame(oriPanel, "View", 1000,
-				1000);
+//		redGsPanel = new Panel();
+//		redGsFrame = new Frame(redGsPanel, "View", 1000,
+//				1000);
+//		oriPanel = new Panel();
+//		oriFrame = new Frame(oriPanel, "View", 1000,
+//				1000);
 		updateImage();
 		canRun = true;
 	}
@@ -76,25 +72,13 @@ public class ImageDetection extends Thread {
 			Imgproc.HoughCircles(redGsImg, circles, Imgproc.CV_HOUGH_GRADIENT,
 					2, 500, 40, 40, 20, 100);
 			if (circles.cols() > 0) {
-//				if(timeToHit == 0) {
-//					timeToHit = System.nanoTime() + 2000000000;//time to hit is in 2 sec
-//				}
 				bi[0] = circles.get(0, 0)[0];
 				bi[1] = circles.get(0, 0)[1];
-//				prevPos = position;
 				position = bi;
-//				float timePassed = (recCaptTime-prevCaptTime);
-//				ballSpeedX = (long) ((position[0]-prevPos[0])/timePassed);
-//				ballSpeedY = (long) ((position[1]-prevPos[1])/timePassed);
-//				bi[0] = ballSpeedX * (timeToHit-System.nanoTime());
-//				bi[1] = ballSpeedY * (timeToHit-System.nanoTime());
 			} else {
-//				if(timeToHit == 0) {
-					bi[0] = -1.0;
-					bi[1] = -1.0;
-					position = bi;
-//					prevPos = bi;
-//				}
+				bi[0] = -1.0;
+				bi[1] = -1.0;
+				position = bi;
 			}
 			
 		}
@@ -108,46 +92,13 @@ public class ImageDetection extends Thread {
 	public double[] getRedBall() {
 		return position;
 	}
-	
-	public boolean isTimeToHit() {
-		if(timeToHit - System.nanoTime() - 500000000 < 0) {
-			timeToHit = 0;
-			return true;
-		}
-		return false;
-	}
-
-	// public double[] getGreenSquare() {
-	// double[] bi = new double[2];
-	// updateImage();
-	//
-	// Scalar hsv_min = new Scalar(90, 70, 50, 0);
-	// Scalar hsv_max = new Scalar(100, 255, 255, 0);
-	// Core.inRange(hsvImg, hsv_min, hsv_max, redGsImg);
-	// Imgproc.erode(redGsImg, redGsImg, erode);
-	// Imgproc.dilate(redGsImg, redGsImg, dilate);
-	//
-	// Mat circles = new Mat();
-	// Imgproc.HoughCircles(redGsImg, circles, Imgproc.CV_HOUGH_GRADIENT, 2,
-	// 500, 40, 40, 20, 100);
-	// if (circles.cols() > 0) {
-	// bi[0] = circles.get(0, 0)[0];
-	// bi[1] = circles.get(0, 0)[1];
-	// } else {
-	// bi[0] = -1.0;
-	// bi[1] = -1.0;
-	// }
-	// return bi;
-	// }
 
 	private void updateImage() {
-		prevCaptTime = recCaptTime;
 		capture.read(oriImg);
-		recCaptTime = System.nanoTime();
-		redGsPanel.setimagewithMat(redGsImg);// redGsImg);
-		redGsFrame.repaint();
-		oriPanel.setimagewithMat(oriImg);// redGsImg);
-		oriFrame.repaint();
+//		redGsPanel.setimagewithMat(redGsImg);
+//		oriPanel.setimagewithMat(oriImg);
+//		redGsFrame.repaint();
+//		oriFrame.repaint();
 		Imgproc.GaussianBlur(oriImg, oriImg, new Size(11, 11), 30.0);
 		Imgproc.cvtColor(oriImg, hsvImg, Imgproc.COLOR_BGR2HSV);
 	}
