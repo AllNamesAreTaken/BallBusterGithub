@@ -14,6 +14,8 @@ public class Bot extends Thread{
 	public Bot(RegulatedMotor x, RegulatedMotor y) {
 		kicker = x;
 		ramp = y;
+		// Add
+		ramp.resetTachoCount();
 		kicker.setSpeed(600);
 		ramp.setSpeed(400);
 	}
@@ -35,15 +37,8 @@ public class Bot extends Thread{
 		ramp.stop();
 		ramp.rotateTo(0);
 	}
-	
-	public boolean isRunning() {
-		return isRunning;
-	}
-	
-	public void stopBot() {
-		isRunning = false;
-	}
 
+	
 	public void setDegree(int deg) {
 		if(Math.abs(deg) < 400) {
 			detected = true;
@@ -53,13 +48,5 @@ public class Bot extends Thread{
 			detected = false;
 			degree = 0;
 		}
-	}
-
-	public void resetRamp() {
-		ramp.rotateTo(0);
-	}
-
-	public void resetTachoCount() {
-		Motor.B.resetTachoCount();
 	}
 }

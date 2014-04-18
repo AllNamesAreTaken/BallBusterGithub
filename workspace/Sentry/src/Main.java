@@ -38,15 +38,9 @@ public class Main {
 			System.out.println("Logging file not found");
 		}
 
-		robot.resetTachoCount();
-		Boolean quit = false;
 		long startTime = 0;
 		long endTime = 1;
-		int count = 0;
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd|HH:mm:ss");
-		Date date = new Date();
-		logger.append("\n<" + "DWG" + ">,");
-
+		
 		imgd.startDet();
 		imgd.start();
 
@@ -62,7 +56,8 @@ public class Main {
 				logger.append((endTime - startTime) + ",");
 			}
 		}
-		robot.stopBot();
+
+		robot.isRunning = false;
 		logger.close();
 		imgd.stopDet();
 	}
