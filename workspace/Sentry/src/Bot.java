@@ -29,11 +29,9 @@ public class Bot extends Thread{
 				try {
 					this.sleep(200);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				ramp.rotateTo(0);
-//				continue;
 			}
 //			if (ramp.getTachoCount() < degree)
 //				ramp.forward();
