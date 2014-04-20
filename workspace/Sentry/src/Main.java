@@ -48,7 +48,7 @@ public class Main {
 		while (!Button.ESCAPE.isDown()) {
 			startTime = System.nanoTime();
 			double[] redBallPosition = imgd.getRedBall();
-			robot.setDegree((int) (400* Math.atan2(
+			robot.setDegree((int) (260* Math.atan2(
 					300 - redBallPosition[1], redBallPosition[0])));
 			endTime = System.nanoTime();
 

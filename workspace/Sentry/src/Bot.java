@@ -16,7 +16,7 @@ public class Bot extends Thread{
 		ramp = y;
 		// Add
 		ramp.resetTachoCount();
-		kicker.setSpeed(600);
+		kicker.setSpeed(800);
 		ramp.setSpeed(400);
 	}
 	
@@ -26,6 +26,12 @@ public class Bot extends Thread{
 				detected = false;
 				ramp.rotateTo(degree);
 				kicker.rotate(180);
+				try {
+					this.sleep(200);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				ramp.rotateTo(0);
 //				continue;
 			}
@@ -40,7 +46,7 @@ public class Bot extends Thread{
 
 	
 	public void setDegree(int deg) {
-		if(Math.abs(deg) < 400) {
+		if(Math.abs(deg) < 200) {
 			detected = true;
 			degree = deg;
 		}

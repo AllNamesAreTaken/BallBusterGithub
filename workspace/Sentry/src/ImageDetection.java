@@ -56,7 +56,7 @@ public class ImageDetection extends Thread {
 		double[] bi = new double[2];
 		Scalar hsv_min = new Scalar(0, 70, 50, 0);
 		Scalar hsv_max = new Scalar(5, 255, 255, 0);
-		Scalar hsv_min2 = new Scalar(175, 70, 50, 0);
+		Scalar hsv_min2 = new Scalar(170, 70, 50, 0);
 		Scalar hsv_max2 = new Scalar(180, 255, 255, 0);
 		while (canRun) {
 			updateImage();
