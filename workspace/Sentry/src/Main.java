@@ -45,11 +45,23 @@ public class Main {
 		imgd.start();
 
 		robot.start();
+
 		while (!Button.ESCAPE.isDown()) {
 			startTime = System.nanoTime();
 			double[] redBallPosition = imgd.getRedBall();
-			robot.setDegree((int) (260* Math.atan2(
-					300 - redBallPosition[1], redBallPosition[0])));
+			if(redBallPosition[0] != -1) {
+				int deg = (int) (200* Math.atan2(
+						300 - redBallPosition[1], 300 + redBallPosition[0]));
+				System.out.println("Deg: " +deg + "Ballx: " + (redBallPosition[0]) + " Bally: " + (redBallPosition[1]));
+				if(Math.abs(deg) < 40) {
+					if(deg > 10)
+						deg = (int) (deg + 30);
+					else if(deg < -10)
+						deg = (int) (deg - 30);
+				}
+				robot.setDegree(deg);
+			}
+			
 			endTime = System.nanoTime();
 
 			if (logger != null) {

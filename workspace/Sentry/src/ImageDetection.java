@@ -18,15 +18,16 @@ public class ImageDetection extends Thread {
 	private double[] position;
 	private boolean canRun;
 	
-//	private Panel redGsPanel;
-//	private Panel oriPanel;
-//	private Frame redGsFrame;
-//	private Frame oriFrame;
+	private Panel redGsPanel;
+	private Panel oriPanel;
+	private Frame redGsFrame;
+	private Frame oriFrame;
 
 	public ImageDetection() {
 	}
 
 	public void startDet() {
+		position = new double[] { -1.0, -1.0 };
 		erode = Imgproc.getStructuringElement(Imgproc.MORPH_RECT,
 				new Size(3, 3));
 		dilate = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5,
@@ -34,19 +35,18 @@ public class ImageDetection extends Thread {
 		oriImg = new Mat();
 		hsvImg = new Mat();
 		redGsImg = new Mat();
-		position = new double[] { -1.0, -1.0 };
 		capture = new VideoCapture(1);
 		capture.set(3, 800);
 		capture.set(4, 600);
 
 		capture.read(oriImg);
 		oriImg.copyTo(redGsImg);
-//		redGsPanel = new Panel();
-//		redGsFrame = new Frame(redGsPanel, "View", 1000,
-//				1000);
-//		oriPanel = new Panel();
-//		oriFrame = new Frame(oriPanel, "View", 1000,
-//				1000);
+		redGsPanel = new Panel();
+		redGsFrame = new Frame(redGsPanel, "View", 1000,
+				1000);
+		oriPanel = new Panel();
+		oriFrame = new Frame(oriPanel, "View", 1000,
+				1000);
 		updateImage();
 		canRun = true;
 	}
@@ -60,6 +60,12 @@ public class ImageDetection extends Thread {
 		Scalar hsv_max2 = new Scalar(180, 255, 255, 0);
 		while (canRun) {
 			updateImage();
+			
+			redGsPanel.setimagewithMat(redGsImg);
+			oriPanel.setimagewithMat(oriImg);
+			redGsFrame.repaint();
+			oriFrame.repaint();
+			
 			Mat tempImg = new Mat();
 			hsvImg.copyTo(tempImg);
 			Core.inRange(hsvImg, hsv_min, hsv_max, redGsImg);
@@ -95,10 +101,6 @@ public class ImageDetection extends Thread {
 
 	private void updateImage() {
 		capture.read(oriImg);
-//		redGsPanel.setimagewithMat(redGsImg);
-//		oriPanel.setimagewithMat(oriImg);
-//		redGsFrame.repaint();
-//		oriFrame.repaint();
 		Imgproc.GaussianBlur(oriImg, oriImg, new Size(11, 11), 30.0);
 		Imgproc.cvtColor(oriImg, hsvImg, Imgproc.COLOR_BGR2HSV);
 	}

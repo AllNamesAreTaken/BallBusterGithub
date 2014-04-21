@@ -15,12 +15,12 @@ public class Bot extends Thread{
 		kicker = x;
 		ramp = y;
 		// Add
-		ramp.resetTachoCount();
 		kicker.setSpeed(800);
 		ramp.setSpeed(400);
 	}
 	
 	public void run() {
+		ramp.resetTachoCount();
 		while (isRunning){
 			if(detected) { 
 				detected = false;
@@ -32,12 +32,19 @@ public class Bot extends Thread{
 					e.printStackTrace();
 				}
 				ramp.rotateTo(0);
+				try {
+					this.sleep(1000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 //			if (ramp.getTachoCount() < degree)
 //				ramp.forward();
 //			else if (ramp.getTachoCount() > degree)
 //				ramp.backward();
 		}
+		
 		ramp.stop();
 		ramp.rotateTo(0);
 	}
@@ -45,12 +52,12 @@ public class Bot extends Thread{
 	
 	public void setDegree(int deg) {
 		if(Math.abs(deg) < 200) {
-			detected = true;
 			degree = deg;
+			detected = true;
 		}
 		else {
-			detected = false;
 			degree = 0;
+			detected = false;
 		}
 	}
 }
