@@ -20,58 +20,81 @@ import org.opencv.highgui.Highgui;
 import org.opencv.highgui.VideoCapture;
 import org.opencv.imgproc.Imgproc;
 
-public class Main {
+public class Main
+{
 
-	static ImageDetection imgd;
+    static ImageDetection imgd;
 
-	public static void main(String[] args) {
-		PrintWriter logger = null;
-		Bot robot = new Bot(Motor.A, Motor.B);
-		imgd = new ImageDetection();
+    public static void main(String[] args)
+    {
+        PrintWriter loggerLoop = null;
+        PrintWriter loggerDegreeCompare = null;
+        Bot robot = new Bot(Motor.A, Motor.B);
+        imgd = new ImageDetection();
 
-		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
-		try {
-			logger = new PrintWriter(new BufferedWriter(new FileWriter(
-					"LogData.csv", true)));
-		} catch (IOException ex) {
-			System.out.println("Logging file not found");
-		}
+        try
+        {
+            loggerLoop =
+                    new PrintWriter(new BufferedWriter(new FileWriter(
+                            "LogControlLoopTime.csv", false)));
+            loggerDegreeCompare =
+                    new PrintWriter(new BufferedWriter(new FileWriter(
+                            "LogDegreeComparison.csv", false)));
+        }
+        catch(IOException ex)
+        {
+            System.out.println("Logging file not found");
+        }
 
-		long startTime = 0;
-		long endTime = 1;
-		
-		imgd.startDet();
-		imgd.start();
+        long startTime = 0;
+        long endTime = 1;
 
-		robot.start();
+        imgd.startDet();
+        imgd.start();
 
-		while (!Button.ESCAPE.isDown()) {
-			startTime = System.nanoTime();
-			double[] redBallPosition = imgd.getRedBall();
-			if(redBallPosition[0] != -1) {
-				int deg = (int) (200* Math.atan2(
-						300 - redBallPosition[1], 300 + redBallPosition[0]));
-				System.out.println("Deg: " +deg + "Ballx: " + (redBallPosition[0]) + " Bally: " + (redBallPosition[1]));
-				if(Math.abs(deg) < 40) {
-					if(deg > 10)
-						deg = (int) (deg + 30);
-					else if(deg < -10)
-						deg = (int) (deg - 30);
-				}
-				robot.setDegree(deg);
-			}
-			
-			endTime = System.nanoTime();
+        robot.start();
 
-			if (logger != null) {
-				logger.append((endTime - startTime) + ",");
-			}
-		}
+        while(!Button.ESCAPE.isDown())
+        {
+            startTime = System.nanoTime();
+            double[] redBallPosition = imgd.getRedBall();
+            if(redBallPosition[0] != -1)
+            {
+                int deg =
+                        (int) (200 * Math.atan2(300 - redBallPosition[1],
+                                300 + redBallPosition[0]));
+                System.out.println("Deg: " + deg + "Ballx: "
+                        + (redBallPosition[0]) + " Bally: "
+                        + (redBallPosition[1]));
+                if(Math.abs(deg) < 40)
+                {
+                    if(deg > 10)
+                        deg = (int) (deg + 30);
+                    else if(deg < -10)
+                        deg = (int) (deg - 30);
+                }
+                
+                if(loggerDegreeCompare != null)
+                {
+                    loggerDegreeCompare.append((deg - robot.ramp.getTachoCount()) + ",");
+                }
+                robot.setDegree(deg);
+            }
 
-		robot.isRunning = false;
-		logger.close();
-		imgd.stopDet();
-	}
+            endTime = System.nanoTime();
+
+            if(loggerLoop != null)
+            {
+                loggerLoop.append((endTime - startTime) + ",");
+            }
+        }
+
+        robot.isRunning = false;
+        loggerLoop.close();
+        loggerDegreeCompare.close();
+        imgd.stopDet();
+    }
 
 }

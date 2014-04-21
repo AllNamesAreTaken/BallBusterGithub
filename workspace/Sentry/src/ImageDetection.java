@@ -1,3 +1,8 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
@@ -53,11 +58,26 @@ public class ImageDetection extends Thread {
 
 	@Override
 	public void run() {
+	    PrintWriter loggerImageProcessTime = null;
+	    try
+        {
+            loggerImageProcessTime =
+                    new PrintWriter(new BufferedWriter(new FileWriter(
+                            "LogImageProcessTime.csv", false)));
+        }
+        catch(IOException ex)
+        {
+            System.out.println("Logging file not found");
+        }
+	    
 		double[] bi = new double[2];
 		Scalar hsv_min = new Scalar(0, 70, 50, 0);
 		Scalar hsv_max = new Scalar(5, 255, 255, 0);
 		Scalar hsv_min2 = new Scalar(170, 70, 50, 0);
 		Scalar hsv_max2 = new Scalar(180, 255, 255, 0);
+		
+		long startTime = System.nanoTime();
+		
 		while (canRun) {
 			updateImage();
 			
@@ -87,7 +107,13 @@ public class ImageDetection extends Thread {
 				position = bi;
 			}
 			
+			if(loggerImageProcessTime != null)
+			{
+			    loggerImageProcessTime.append(System.nanoTime() - startTime + ",");
+			}
 		}
+		
+		loggerImageProcessTime.close();
 	}
 
 	public void stopDet() {
